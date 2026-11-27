@@ -170,3 +170,26 @@ except ValidationError as e:
     print(f"Total number of error: {e.error_count()}")
     for err in e.errors():
         print(f"Field : {err["loc"]} , Type : {err['type']}, Message: {err['msg']}")
+
+
+# Try writing a small Product (BaseModel) in your notebook with fields: 
+#     product id: int, name: str, price: float, in_stock: bool,
+#     and test it with:
+# Valid coerced inputs (product_id="50", price="199,99", in_stock="1"),
+# A broken input inside try / except ValidationError as et and print e.error_count(),
+
+from pydantic import BaseModel, ValidationError
+
+class Product(BaseModel):
+    product_id: int
+    name: str 
+    price: float
+    in_stock: bool
+try:
+    rr = Product(product_id="50", price="199,99", in_stock="1") # it it use lax mode
+
+except ValidationError as e:
+    print(f"total number of error found:{e.error_count()}")
+    for err in e.errors():
+        print(f"Field : {err["loc"]} , Type : {err['type']}, Message: {err['msg']}")
+
